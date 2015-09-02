@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html ng-app="sensor">
+	<head>
+		<link rel="stylesheet" type="text/css" href="styles/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="styles/app.css" />
+		<meta charset="utf-8"/>
+		<title>IN-MONITOR</title>
+	</head>
+	<body ng-init="getDevices()">
+		<nav class="navbar navbar-default">
+		  <div class="container-fluid">
+		   <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+           <ul class="nav navbar-nav">
+             <li><a href="http://inmonitor.tis.bz.it">IN-MONITOR</a></li>
+           </ul>
+           <ul class="nav navbar-nav navbar-right">
+             <li><a target="_blank" href="http://www.tis.bz.it">TIS innovation park</a></li>
+             <li><a target="_blank" href="http://www.transart.it">Transart Festival</a></li>
+           </ul>
+         </div>
+		  </div>
+		</nav>
+		<div class="container">
+			<div class="row">
+				<div class="list-group col-md-2" ng-show="devices.length>1">
+					<a class="list-group-item" href="javascript:void(0)" ng-click="requestNew()" ng-class="currentDevice==undefined?'active':''"><h4 class="list-group-item-heading">Overview</h4></a>
+					<a ng-repeat="device in devices" class="list-group-item" href="javascript:void(0)" ng-class="currentDevice.id==device.id?'active':''" ng-click="requestNew(device)">
+						<h4 class="list-group-item-heading">INMONITOR-{{device.id}}</h4>
+					</a>
+				</div>
+				<div class="col-md-10">
+					<div class="row">
+						<div  class="col-md-11 col-md-offset-1 alert alert-info" ng-if="data.devices!=-1">
+								<h3 ng-if="currentDevice.id==undefined">INMONITOR: 24 hours roundup</h3>
+								<h3 ng-if="currentDevice.id>0">
+									INMONITOR-{{currentDevice.id}}
+									<a ng-show="currentDevice.ip" class="btn btn-primary pull-right" href="http://{{currentDevice.ip}}">Local IP: {{currentDevice.ip}}</a>
+								</h3>
+						</div>
+						<div  class="col-md-11 col-md-offset-1 alert alert-success" ng-if="currentDevice.id==undefined&&data.devices==-1">
+								<h3>INMONITOR-{{data.device}} LIVE DATA</h3>
+						</div>
+					</div>
+					<div class="row" ng-if="data.timestamp">
+						<div class="jumbotron col-md-offset-1 col-md-5">
+							<h2><small> Temperature </small><br><span ng-if="data.temperature!=undefined">{{data.temperature|number:1}} °C</span></h2>
+							<ul style="padding:0">
+								<li class="label label-primary">min {{data.temperature_minimum|number:1}} °C</li>
+								<li class="label label-success">average {{data.temperature_average|number:1}} °C</li>
+								<li class="label label-danger">max {{data.temperature_maximum|number:1}} °C</li>
+							</ul>
+						</div>	
+						<div class="jumbotron col-md-offset-1 col-md-5">
+							<h2><small> Humidity </small><br><span ng-if="data.humidity!=undefined">{{data.humidity|number:1}} %rH</span></h2>
+							<ul style="padding:0">
+								<li class="label label-primary">min {{data.humidity_minimum|number:1}} %rH</li>
+								<li class="label label-success">average {{data.humidity_average|number:1}} %rH</li>
+								<li class="label label-danger">max {{data.humidity_maximum|number:1}} %rH</li>
+							</ul>
+						</div>	
+					</div>
+					<div class="row" ng-if="data.timestamp">
+						<div class="jumbotron col-md-offset-1 col-md-5">
+							<h2><small> Pressure </small><br><span ng-if="data.pressure!=undefined">{{data.pressure|number:1}} hPa</span></h2>
+							<ul style="padding:0">
+								<li class="label label-primary">min {{data.pressure_minimum|number:1}} hPa</li>
+								<li class="label label-success">average {{data.pressure_average|number:1}} hPa</li>
+								<li class="label label-danger">max {{data.pressure_maximum|number:1}} hPa</li>
+							</ul>
+						</div>	
+						<div class="jumbotron col-md-offset-1 col-md-5">
+							<h2><small> Illuminance </small><br><span ng-if="data.illuminance!=undefined">{{data.illuminance|number:1}} lx</span></h2>
+							<ul style="padding:0">
+								<li class="label label-primary">min {{data.illuminance_minimum|number:1}} lx</li>
+								<li class="label label-success">average {{data.illuminance_average|number:1}} lx</li>
+								<li class="label label-danger">max {{data.illuminance_maximum|number:1}} lx</li>
+							</ul>
+						</div>
+					</div>
+					<div class="row" ng-if="data.timestamp">
+						<div  class="col-md-11 col-md-offset-1 alert"ng-class="data.devices==-1?'alert-success':'alert-info'">
+							<span ng-if="data.devices==0"> Active INMONITOR devices: {{devices.length}}</span>
+							<span ng-if="data.devices!=0"> {{data.timestamp|date:'dd. MMM yyyy, HH:mm:ss'}}, min/max/average: last 24 hours</span>
+						</div>
+					</div>
+					<div class="row" ng-if="!data.timestamp">
+						<div  class="col-md-11 col-md-offset-1 alert alert-danger">
+							<h4>Not available.</h4>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/jquery.min.js" type="text/javascript"><!-- required for FF3 and Opera --></script>
+	<script src="js/angular.min.js" type="text/javascript"><!-- required for FF3 and Opera --></script>
+	<script src="js/app.js" type="text/javascript"><!-- required for FF3 and Opera --></script>
+</html>
