@@ -14,7 +14,8 @@ $device = $mysqli->escape_string($_REQUEST['device']);
 
 $data = array();
 
-if (!empty($device)) {
+if (!empty($device)) 
+{
 	$query = "SELECT 1 as devices, 1000*UNIX_TIMESTAMP(timestamp) as timestamp, temperature, humidity, pressure, illuminance 
 		FROM data WHERE device_id=\"${device}\" ORDER BY timestamp DESC LIMIT 1";
 		$result = $mysqli->query($query);
@@ -25,22 +26,16 @@ if (!empty($device)) {
 			$time = $data['timestamp'];
 		}	
 }
-elseif (empty($DB_CLOUDSERVER)) {
+elseif (empty($DB_CLOUDSERVER)) 
+{
 	// get realtime data
 	$data = json_decode(file_get_contents('http://localhost:2222/'), true);
 	if (!empty($data)) $data['timestamp']=time()*1000;
 	$data['devices'] = -1;
 }
-else {
-	$query = "SELECT COUNT(d1.timestamp) as devices, MAX(1000*UNIX_TIMESTAMP(d1.timestamp)) as timestamp, AVG(d1.temperature) as temperature, 
-		AVG(d1.humidity) as humidity, AVG(d1.pressure) as pressure, AVG(d1.illuminance) as illuminance
-		FROM data d1 
-		WHERE d1.timestamp=(SELECT d2.timestamp FROM data d2 
-			WHERE d2.device_id=d1.device_id 
-			AND d2.timestamp>=DATE_SUB(NOW(), INTERVAL 24 HOUR
-			ORDER BY d2.timestamp DESC LIMIT 1
-		)";
-		$data = array('timestamp'=>time()*1000, 'devices'=>0);
+else 
+{
+	$data = array('timestamp'=>time()*1000, 'devices'=>0);
 }
 
 // 24h- statistics
@@ -54,7 +49,7 @@ $query = "SELECT device_id as device, COUNT(temperature) as 24hdatasets,
 	WHERE temperature>0 AND humidity>0 AND pressure>0 AND illuminance>0 ";
 $query .= "AND timestamp>=DATE_SUB(FROM_UNIXTIME(".($data['timestamp']/1000)."), INTERVAL 24 HOUR) ";
 if (!empty($device)) $query .= "AND device_id=\"${device}\" ";
-$query .= "GROUP BY device_id";
+//$query .= "GROUP BY device_id";
 //print $query;
 $result = $mysqli->query($query);
 if ($mysqli->affected_rows>0)
