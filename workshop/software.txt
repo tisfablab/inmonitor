@@ -1,0 +1,19 @@
+Copy Image to SD:
+- http://sourceforge.net/projects/win32diskimager/ (win)
+- http://www.tweaking4all.com/hardware/raspberry-pi/macosx-apple-pi-baker/ (mac)
+
+A decent text editor (Windows only):
+- https://notepad-plus-plus.org/
+
+SSH/Telnet Tool
+- http://www.putty.org/
+
+PCB Layouting:
+- http://fritzing.org/home/
+
+Processing
+- https://processing.org/
+
+2D Vector Drawing Tool
+- https://inkscape.org/
+
