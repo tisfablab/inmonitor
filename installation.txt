@@ -1,0 +1,129 @@
+################################################################################################################
+#### ALREADY DONE ##############################################################################################
+################################################################################################################
+
+# === CONFIGURE RASPBERRY PI ===
+
+sudo raspi-config
+# - expand filesystem
+# (- user password)
+# - internationalisation
+#   - locale: de/it/en utf8 default: en
+#   - timezone: eu/rome
+#   (- keyboard layout)
+# - advanced options
+# - hostname: inmonitor-x
+# - enable i2c: enable yes
+# reboot!
+
+# === UPDATE SOFTWARE & FIRMWARE ===
+
+sudo apt-get update
+sudo apt-get upgrade
+sudo rpi-update
+
+# === WIFI, move wpa_supplicant to /boot/wifi.txt ===
+
+sudo wget https://github.com/porjo/mt7601/raw/master/src/mcu/bin/MT7601.bin -O /lib/firmware/mt7601u.bin
+sudo mv /etc/wpa_supplicant/wpa_supplicant.conf /boot/wifi.txt
+sudo ln -s /boot/wifi.txt /etc/wpa_supplicant/wpa_supplicant.conf
+sudo vi /boot/wifi.txt
+# append the following lines:
+network={
+	ssid="transart"
+	psk="in-monitor"
+}
+
+# === Set hostname via /boot/hostname.txt d ===
+
+sudo vi /etc/rc.local
+# add the following lines before exit(0):
+if [ -f /boot/hostname.txt ]; then
+	cp /etc/hosts /etc/hosts.backup
+	cat /etc/hosts.backup | grep -v "`cat /etc/hostname`" > /etc/hosts
+	cat /boot/hostname.txt | /usr/bin/tr -d '\n' > /etc/hostname
+	echo -n "127.0.0.1 " >> /etc/hosts
+	cat /etc/hostname >> /etc/hosts
+	echo "" >> /etc/hosts
+	rm /boot/hostname.txt
+	reboot
+fi
+
+# === PYTHON LIBS, GIT AND I2C STUFF ===
+
+sudo apt-get install python-dev python-rpi.gpio python-smbus python-requests i2c-tools git
+sudo vi /etc/modules
+# add new line: i2c-bcm2708
+# add new line: i2c-dev
+
+# === SAMBA FOR EASY FILE TRANSFERS ===
+sudo apt-get install samba samba-common-bin
+sudo vi /etc/samba/smb.conf
+# [homes]
+# read only = no
+# create mask = 0755
+# directory mask = 0755
+sudo update-rc.d samba defaults
+sudo service samba restart
+sudo smb-passwd -a pi
+# password: transart
+
+# === APACHE, PHP & MYSQL ===
+sudo apt-get install apache2 apache2-doc apache2-utils
+sudo apt-get install libapache2-mod-php5 php5 php-pear php5-xcache
+sudo apt-get install mysql-server mysql-client php5-mysql phpmyadmin 
+# root password: "transart" 
+# don'd use db-common for phpmyadmin
+
+################################################################################################################
+#### PLEASE CONFIGURE YOUR SYSTEM! #############################################################################
+################################################################################################################
+
+# mount the sd card and edit <sd:>/wifi.txt
+# append the following lines:
+network={
+	ssid="<MY-SSID>"
+	psk="<MY-WIFI-Password>"
+}
+# save your host name as <sd:>/hostname.txt, eg:
+inmonitor-12
+
+# boot the raspberry pi with the sd card; on connection 
+# change ssh&samba&mysql passwords
+passwd
+smbpasswd
+mysqladmin -u root -p password
+
+################################################################################################################
+#### INSTALL IN-MONITOR SOFTWARE ###############################################################################
+################################################################################################################
+
+# clone the in-monitor repo
+cd ~ 
+git clone https://github.com/tisfablab/inmonitor
+(eventually git pull later on)
+
+# edit inmonitor/python/inmonitor.py
+# set device id and password
+
+# edit inmonitor/www/_db.php
+# set DB_PASSWORD
+
+# use http://<ip>/phpmyadmin to
+# make database "inmonitor" utf8_general_ci
+# import dump into database
+# insert into devices id, password
+
+# activate www
+sudo chmod 755 /home/pi
+sudo chmod 755 -R /home/pi/inmonitor
+sudo ln -s /home/pi/inmonitor/virtualhost.conf /etc/apache2/sites-available/inmonitor
+sudo a2dissite default
+sudo a2ensite inmonitor
+sudo service apache2 restart
+
+# test and install start script
+ln -s /home/pi/inmonitor/inmonitor.sh /etc/init.d/inmonitor
+sudo update-rc.d inmonitor defaults
+sudo service inmonitor test
+sudo service inmonitor start
