@@ -13,19 +13,15 @@
 
 MYPATH="/home/pi/inmonitor/python"
 SCRIPT="inmonitor.py"
-SHORTCUT="/home/pi/`cat /etc/hostname`.url"
 
 case "$1" in 
     start)
-		echo "Writing shortcut to local IP to pi home dir"
-		echo "[InternetShortcut]" > $SHORTCUT
-		echo "URL=http://"`ifconfig wlan0 | grep inet | awk '{print $2}' | sed 's/addr://g'` >> $SHORTCUT
-        echo "Starting inmonitor"
-		python $MYPATH/$SCRIPT >/dev/null 2>&1 &
+	echo "Starting inmonitor"
+	$MYPATH/$SCRIPT >/dev/null 2>&1 &
         ;;
     test)
         echo "(Re)Starting inmonitor in verbose mode"
-		killall $SCRIPT >/dev/null 2>&1
+	killall $SCRIPT >/dev/null 2>&1
         $MYPATH/$SCRIPT
         ;;
     stop)
