@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inmonitor>
+  <device>
+    <temperature>83.19838</temperature>
+    <humidity>242.667</humidity>
+	<pressure>15.667</pressure>
+	<illuminance>92.667</illuminance>
+  </device>
+    <device>
+    <temperature>53.19838</temperature>
+    <humidity>52.667</humidity>
+	<pressure>155.667</pressure>
+	<illuminance>22.667</illuminance>
+  </device>
+  <device>
+    <temperature>23.19838</temperature>
+    <humidity>65.667</humidity>
+	<pressure>43.667</pressure>
+	<illuminance>88.667</illuminance>
+  </device>
+  <device>
+    <temperature>83.19838</temperature>
+    <humidity>45.667</humidity>
+	<pressure>225.667</pressure>
+	<illuminance>81.667</illuminance>
+  </device>
+  <device>
+    <temperature>343.19838</temperature>
+    <humidity>345.667</humidity>
+	<pressure>225.667</pressure>
+	<illuminance>81.667</illuminance>
+  </device>
+</inmonitor>
