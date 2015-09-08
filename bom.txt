@@ -1,0 +1,24 @@
+Bill of Materials
+
+What                               Amount   Source (example)
+Raspberry PI (B+)                    1      http://www.watterott.com/de/Raspberry-Pi-Modell-B-512MB-RAM-UK-Version
+Micro SD (e.g. 4GB c10               1      http://www.amazon.it/Kingston-Scheda-microSDHC-SDXC-Adattatore/dp/B004S1PNAO
+WiFi USB Dongle (e.g. DN70421)       1      http://www.watterott.com/de/Wireless-150N-USB-Adapter
+Power Supply 5V 2A Micro USB         1      http://www.watterott.com/de/HNP10I-MICRO-USB
+Watterott BME280 Breakout Board      1      http://www.watterott.com/de/BME280-Breakout-Luftfeuchtigkeits-Druck-Tempertursensor
+Watterott TSL29511 Breakout Board    1      http://www.watterott.com/de/TSL25911-Breakout-sichbares-und-IR-Lichtsensor
+LED (e.g. 3mm green)                 1      ebay/watterott/conrad
+Resistor (e.g. 680 Ohm)              1      ebay/watterott/conrad
+
+Female PIN Header 40x2 pins          1	    ebay/watterott/conrad
+Female PIN Header 7x1 pins           2      ebay/watterott/conrad
+
+Connector board, DIY                 1      local FabLab or http://www.fritzing.org
+
+35mm Spacer Bolts 2x female M2.5     4      https://www.ettinger.de/de/product/0502353
+6mm Spacer Bolts male+female M2.5    4      https://www.ettinger.de/de/product/0512063
+10mm M2.5 Screws                     8      https://www.ettinger.de/de/product/0117243
+
+Red acrylics, lasercut               2      local FabLab or https://www.vectorealism.com
+Transparent acrylics, lasercut       2      local FabLab or https://www.vectorealism.com
+
