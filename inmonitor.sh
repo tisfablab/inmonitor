@@ -14,8 +14,16 @@
 MYPATH="/home/pi/inmonitor/python"
 SCRIPT="inmonitor.py"
 
+WIFIRECONNECT="/home/pi/inmonitor/wifi-reconnect.sh"
+
 case "$1" in 
     start)
+        value=$( ps ax | grep -c "$WIFIRECONNECT" )
+	if [ $value -lt 2 ]
+	then
+		echo "Starting wifi reconnect script"
+		$WIFIRECONNECT > /dev/null 2>&1 &
+	fi
 	echo "Starting inmonitor"
 	$MYPATH/$SCRIPT >/dev/null 2>&1 &
         ;;
