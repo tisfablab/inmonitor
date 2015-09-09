@@ -12,7 +12,7 @@ while true ; do
       echo "Network is up. Not doing anything."
    else
       echo "Network connection down! Attempting reconnection."
-      ifup --force wlan0
+      ifup --force $INTERFACE
    fi
    sleep 300
 done
